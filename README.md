@@ -66,7 +66,7 @@
   <p>
   You can look on the API documentation at <a href="https://documenter.getpostman.com/view/22736405/2s93sXdv3C">API Documentation</a>
   <br>
-  Or through running postman collection stores in <code>./documentation/URLShortener.json</code>
+  Or through running postman collection stored in <code>./documentation/URLShortener.json</code>
   </p>
 
 <hr>
