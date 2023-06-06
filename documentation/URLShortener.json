@@ -1,0 +1,93 @@
+{
+	"info": {
+		"_postman_id": "22a804fc-1b04-4e64-b29a-3ac134c06fda",
+		"name": "URLShortener",
+		"description": "This is the API documentation of Digitize website.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "22736405",
+		"_collection_link": "https://lively-capsule-953081.postman.co/workspace/My-Workspace~f51ac306-cd8e-451a-83e4-d4ab2ecdba6a/collection/22736405-22a804fc-1b04-4e64-b29a-3ac134c06fda?action=share&creator=22736405&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Urls",
+			"item": [
+				{
+					"name": "Get all urls",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{URL}}/urls"
+					},
+					"response": []
+				},
+				{
+					"name": "Get an url",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "User-Agent",
+								"value": "iPhone/537.36",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": "{{URL}}/urls/jnjc5456edc"
+					},
+					"response": []
+				},
+				{
+					"name": "Update an url",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"web\": \"https://google.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/urls/jnjc5456edc"
+					},
+					"response": []
+				},
+				{
+					"name": "Create an url",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"slug\": \"edcdec54\",\r\n    \"web\": \"https://google.com\",\r\n    \"ios\": {\r\n        \"primary\": \"https://ios.primary.google.com\",\r\n        \"fallback\": \"https://ios.fallback.google.com\"\r\n    },\r\n    \"android\": {\r\n        \"primary\": \"https://android.primary.google.com\",\r\n        \"fallback\": \"https://android.fallback.google.com\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/urls"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

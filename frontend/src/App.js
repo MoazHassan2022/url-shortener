@@ -118,7 +118,7 @@ const TableCell = styled.td`
 const App = () => {
   const [url, setUrl] = useState("");
   const [slug, setSlug] = useState("");
-  const [shortLink, setShortLink] = useState("http://localhost:3000/nknced");
+  const [shortLink, setShortLink] = useState("");
   const [error, setError] = useState("");
   const [iosPrimary, setIOSPrimary] = useState("");
   const [iosFallback, setIOSFallback] = useState("");
@@ -137,23 +137,11 @@ const App = () => {
 
   const fetchShortLinks = async () => {
     try {
-      const response = await fetch("/shortlinks");
+      const response = await fetch("http://localhost:8000/api/urls");
       const data = await response.json();
-      /*const data = [  {
-          slug: "cedcedced5",
-          web: "https://google.com",
-          ios: {
-            primary: "https://apps.apple.com/us/app/instagram/id389801252",
-            fallback: "https://apps.apple.com/us/app/instagram/id389801252",
-          },
-          android: {
-            primary: "https://apps.store.com/us/app/instagram/id389801252",
-            fallback: "https://apps.store.com/us/app/instagram/id389801252",
-          },
-        },
-      ];*/
-      setShortLinks(data);
+      setShortLinks(data.urls);
       setShowTable(true);
+      setErrorShow("");
     } catch (error) {
       console.error(error);
       setErrorShow("Server error");
@@ -164,7 +152,7 @@ const App = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3000/shortlinks", {
+      const response = await fetch("http://localhost:8000/api/urls", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -185,12 +173,12 @@ const App = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setShortLink(`http://localhost:3000/${slug}`);
+        setShortLink(data.url);
         setError("");
       } else {
         const error = await response.json();
         setShortLink("");
-        setError(error.error);
+        setError(error.message);
       }
     } catch (error) {
       console.error(error);
@@ -203,32 +191,41 @@ const App = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`/shortlinks/${slugUpdate}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ios: {
-            primary: iosPrimaryUpdate,
-            fallback: iosFallbackUpdate,
+      var update = {};
+      if (urlUpdate !== "") {
+        update.web = urlUpdate;
+      }
+      if (iosPrimaryUpdate !== "" && iosFallbackUpdate !== "") {
+        update.ios = {
+          primary: iosPrimaryUpdate,
+          fallback: iosFallbackUpdate,
+        };
+      }
+      if (androidPrimaryUpdate !== "" && androidFallbackUpdate !== "") {
+        update.android = {
+          primary: androidPrimaryUpdate,
+          fallback: androidFallbackUpdate,
+        };
+      }
+      const response = await fetch(
+        `http://localhost:8000/api/urls/${slugUpdate}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
           },
-          android: {
-            primary: androidPrimaryUpdate,
-            fallback: androidFallbackUpdate,
-          },
-          web: urlUpdate, // Assuming updateUrl is the new URL input for web
-        }),
-      });
+          body: JSON.stringify(update),
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
-        setShortLink(`http://localhost:3000/${slugUpdate}`);
-        setError("");
+        setShortLink(data.url);
+        setErrorUpdate("");
       } else {
         const error = await response.json();
         setShortLink("");
-        setErrorUpdate(error.error);
+        setErrorUpdate(error.message);
       }
     } catch (error) {
       console.error(error);
@@ -356,16 +353,17 @@ const App = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {shortLinks.map((link) => (
-              <TableRow key={link.slug}>
-                <TableCell>{link.slug}</TableCell>
-                <TableCell>{link.web}</TableCell>
-                <TableCell>{link.ios.primary}</TableCell>
-                <TableCell>{link.ios.fallback}</TableCell>
-                <TableCell>{link.android.primary}</TableCell>
-                <TableCell>{link.android.fallback}</TableCell>
-              </TableRow>
-            ))}
+            {shortLinks &&
+              shortLinks.map((link) => (
+                <TableRow key={link.slug}>
+                  <TableCell>{link.slug}</TableCell>
+                  <TableCell>{link.web}</TableCell>
+                  <TableCell>{link.ios.primary}</TableCell>
+                  <TableCell>{link.ios.fallback}</TableCell>
+                  <TableCell>{link.android.primary}</TableCell>
+                  <TableCell>{link.android.fallback}</TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       )}
