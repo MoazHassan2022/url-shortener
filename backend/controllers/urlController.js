@@ -72,7 +72,7 @@ exports.updateUrl = catchAsync(async (req, res, next) => {
     // Check if it exists
     if (!updatedUrl) {
       // Pass it to the error handler
-      return next(new AppError("Short link not found", 409));
+      return next(new AppError("Url link not found", 409));
     }
     res.status(200).json({
       status: "success",
@@ -86,23 +86,35 @@ exports.updateUrl = catchAsync(async (req, res, next) => {
   }
 });
 
-// Controller function to update an url
+// Controller function to get an url link according to device type (ios, android, web)
 exports.getUrl = catchAsync(async (req, res, next) => {
   const slug = req.params.slug;
-  const update = req.body;
   try {
-    const updatedUrl = await Url.findOneAndUpdate({ slug }, update, {
-      new: true,
-    });
+    const wantedUrl = await Url.findOne({ slug });
     // Check if it exists
-    if (!updatedUrl) {
+    if (!wantedUrl) {
       // Pass it to the error handler
-      return next(new AppError("Short link not found", 409));
+      return next(new AppError("Url not found", 409));
+    }
+    // Default, it is a web url
+    var url = wantedUrl.web;
+    const userAgent = req.get("User-Agent");
+    // Check if it is an android device
+    if (userAgent.includes("Android")) {
+      url = wantedUrl.android.primary;
+    }
+    // Check if it is an ios device
+    else if (
+      userAgent.includes("iPhone") ||
+      userAgent.includes("iPad") ||
+      userAgent.includes("iPod") ||
+      userAgent.includes("Macintosh")
+    ) {
+      url = wantedUrl.ios.primary;
     }
     res.status(200).json({
       status: "success",
-      // Construct the url
-      url: `${process.env.HOST}:${process.env.PORT}/${updatedUrl.slug}`,
+      url,
     });
   } catch (error) {
     console.error(error);

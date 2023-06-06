@@ -7,6 +7,7 @@ const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const cors = require("cors");
+const useragent = require("useragent");
 const AppError = require("./utils/appError");
 
 const app = express();
@@ -24,6 +25,13 @@ app.use(
     contentSecurityPolicy: false,
   })
 );
+
+// Store the platform information in the 'platform' property of the request object
+app.use((req, res, next) => {
+  const agent = useragent.parse(req.headers["user-agent"]);
+  req.platform = agent.os.family.toLowerCase();
+  next();
+});
 
 // Development logging
 if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
