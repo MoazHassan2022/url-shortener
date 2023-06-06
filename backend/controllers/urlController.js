@@ -52,12 +52,12 @@ exports.createUrl = catchAsync(async (req, res, next) => {
     res.status(200).json({
       status: "success",
       // Construct the url
-      url: `${process.env.HOST}:${process.env.PORT}/${usedSlug}`,
+      url: `${process.env.HOST}:${process.env.PORT}/api/urls/${usedSlug}`,
     });
   } catch (error) {
     console.error(error);
     // Pass it to the error handler
-    return next(new AppError("Something went wrong!", 500));
+    return next(new AppError("Wrong inputs or something went wrong!", 500));
   }
 });
 
@@ -77,12 +77,12 @@ exports.updateUrl = catchAsync(async (req, res, next) => {
     res.status(200).json({
       status: "success",
       // Construct the url
-      url: `${process.env.HOST}:${process.env.PORT}/${updatedUrl.slug}`,
+      url: `${process.env.HOST}:${process.env.PORT}/api/urls/${updatedUrl.slug}`,
     });
   } catch (error) {
     console.error(error);
     // Pass it to the error handler
-    return next(new AppError("Something went wrong!", 500));
+    return next(new AppError("Wrong inputs or something went wrong!", 500));
   }
 });
 

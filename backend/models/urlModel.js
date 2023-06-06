@@ -4,10 +4,12 @@ const mobileSchema = mongoose.Schema({
   primary: {
     type: String,
     trim: true,
+    required: [true, "Please enter an URL primary"],
   },
   fallback: {
     type: String,
     trim: true,
+    required: [true, "Please enter an URL fallback"],
   },
 });
 
