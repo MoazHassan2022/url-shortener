@@ -1,25 +1,21 @@
 const AppError = require("./../utils/appError");
 
 const handleCastErrorDB = () => {
-  const message = "لم يتم ايجاد البيانات المطلوبة";
+  const message = "Data is not found!";
   return new AppError(message, 400);
 };
 
 const handleDuplicateFieldDB = () => {
-  const message = "هذه البيانات موجودة من قبل. من فضلك استخدم قيم أخرى";
+  const message = "This data already exists!";
   return new AppError(message, 400);
 };
 
 const handleValidatorErrorDB = (error) => {
   const errors = Object.values(error.errors).map((val) => val.message);
-  const message = `${errors.join(". ")} يوجد خطأ في البيانات التي أدخلتها`;
+  const message = `${errors.join(". ")} Errors in input data.`;
   return new AppError(message, 400);
 };
 
-const handleJWTError = () => new AppError("يرجى تسجيل الدخول مرة أخرى", 401);
-
-const handleTokenExpiredError = () =>
-  new AppError("يرجى تسجيل الدخول مرة أخرى", 401);
 const sendErrorDev = (err, res) => {
   res.status(err.statusCode).json({
     status: err.status,
@@ -38,7 +34,7 @@ const sendErrorProd = (err, res) => {
     console.error("ERROR 💥", err);
     res.status(500).json({
       status: "error",
-      message: "حدث خطأ ما",
+      message: "Wrong inputs or something went very wrong!",
     });
   }
 };
