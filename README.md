@@ -18,7 +18,6 @@
   <li><a href="https://www.w3schools.com/nodejs/">Node js</a></li>
   <li><a href="https://www.javatpoint.com/expressjs-tutorial">Express js</a></li>
   <li><a href="https://www.w3schools.in/mongodb/tutorials/">MongoDB</a></li>
-  <li><a href="http://www.w3schools.me/aspnetcore/implement-jwt">JSON Web Token</a></li>
   <li><a href="https://www.w3schools.com/REACT/DEFAULT.ASP">React js</a></li>
  </ul>
 
